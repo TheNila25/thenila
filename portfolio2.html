@@ -1,0 +1,856 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Коммерческие работы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tektur', cursive;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 118px;
+        }
+        
+        /* Убираем полосы прокрутки */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Верхнее меню (как в portfolio.html) */
+        .top-menu {
+            position: fixed;
+            top: 18px;
+            left: 0;
+            width: 100%;
+            padding: 0 64px;
+            z-index: 100;
+            background-color: transparent;
+        }
+        
+        .menu-bar {
+            display: flex;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+        }
+        
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .menu-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 36px;
+            background-color: #f5f5dc;
+        }
+        
+        .menu-link {
+            font-family: 'Tektur', cursive;
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-link:hover {
+            color: #a0a0a0;
+        }
+        
+        .menu-link:active {
+            color: #707070;
+        }
+        
+        /* Выпадающее меню */
+        .portfolio-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            z-index: 60;
+        }
+        
+        .menu-item:hover .portfolio-dropdown {
+            max-height: 300px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 0;
+        }
+        
+        .dropdown-link {
+            font-family: 'Tektur', cursive;
+            font-size: 28px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-link:hover {
+            color: #a0a0a0;
+            background-color: rgba(245, 245, 220, 0.3);
+        }
+        
+        .dropdown-link:active {
+            color: #707070;
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Основное содержимое */
+        main {
+            padding: 40px 64px;
+        }
+        
+        /* Заголовок раздела */
+        .section-title {
+            font-family: 'Tektur', cursive;
+            font-weight: 300;
+            font-size: 24px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+            color: rgba(245, 245, 220, 0.7);
+        }
+
+        /* Секция 2 - Разделительная полоса */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 60px 0;
+        }
+
+        /* Кликабельные боксы */
+        .clickable-box {
+            display: flex;
+            align-items: center;
+            background-color: rgba(245, 245, 220, 0.1);
+            padding: 60px 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .clickable-box:hover {
+            transform: scale(1.02);
+        }
+
+        .box-images {
+            display: flex;
+            gap: 30px;
+            margin-right: 40px;
+            align-items: center;
+        }
+
+        .box-image {
+            width: auto;
+            height: 250px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        .box-title {
+            font-family: 'Tektur', cursive;
+            font-size: 48px;
+            font-weight: 700;
+            color: #f5f5dc;
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        /* Секция с раскрывающимся контентом */
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background-color: rgba(245, 245, 220, 0.12);
+        }
+
+        .expanded-content {
+            max-height: 5000px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стили для содержимого боксов */
+        .content-image {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+            margin-right: 40px;
+        }
+
+        /* Стили для контента бокса 1 */
+        .scroll-hint {
+            font-size: 18px;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .content-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .content-text {
+            flex: 1;
+            font-size: 24px;
+            line-height: 1.6;
+            padding: 0 40px;
+        }
+
+        .content-image-large {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .content-image-pair {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .content-image-pair img {
+            width: 45%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .centered-text {
+            text-align: center;
+            font-size: 24px;
+            margin: 10px 0 20px;
+        }
+
+        .highlight {
+            background-color: rgba(245, 245, 220, 0.1);
+            padding: 0 2px;
+        }
+
+        /* Стили для бокса 2 */
+        .project-hint {
+            font-size: 18px;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 30px;
+            text-align: left;
+            font-style: italic;
+        }
+
+        .small-image {
+            width: 30%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+            margin-top: -20px;
+        }
+
+        .equal-height-pair {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+
+        .equal-height-pair img {
+            width: 45%;
+            max-width: 600px;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .enlarged-by-9 {
+            width: 109%;
+            max-width: 654px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .smaller-image {
+            width: 20%;
+            max-width: 400px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .single-large-image {
+            width: 80%;
+            max-width: 800px;
+            height: auto;
+            object-fit: contain;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .shifted-right {
+            margin-left: 45px;
+        }
+
+        .text-top {
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .multi-line-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стили для бокса 3 */
+        .hotel-hint {
+            font-size: 18px;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 30px;
+            text-align: left;
+            font-style: italic;
+        }
+
+        .hotel-text {
+            flex: 1;
+            font-size: 24px;
+            line-height: 1.6;
+            padding: 0 40px;
+        }
+
+        .position-list {
+            margin-top: 10px;
+        }
+
+        .position-list div {
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .position-list div:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+
+        .hotel-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 30px 0;
+        }
+
+        .small-images-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .small-images-row img {
+            width: 22%;
+            max-width: 250px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .small-images-text {
+            font-size: 24px;
+            line-height: 1.6;
+            width: 34%;
+            padding-left: 20px;
+        }
+
+        .four-images-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .four-images-row img {
+            width: 23%;
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .uniform-pair {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .uniform-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+
+        .uniform-item img {
+            width: 107%;
+            max-width: 642px;
+            height: 428px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .uniform-item .caption {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        /* Новые стили для измененных изображений */
+        .shifted-right-48 {
+            margin-left: 53px;
+        }
+        
+        .reduced-by-15 {
+            width: 85%;
+            height: auto;
+        }
+        
+        .half-size {
+            width: 50%;
+            height: auto;
+            max-width: 300px;
+        }
+        
+        .enlarged-uniform {
+            width: 120%;
+            max-width: 600px;
+            height: 400px;
+            object-fit: contain;
+        }
+        
+        .equal-height-images {
+            height: 336px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .margin-top-20 {
+            margin-top: 20px;
+        }
+
+        .shifted-right-135 {
+            margin-left: 248px;
+        }
+
+        .image-with-text {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .image-with-text img {
+            width: 30%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .image-with-text .text {
+            font-size: 24px;
+            line-height: 1.6;
+            padding-left: 40px;
+            width: 70%;
+        }
+
+        /* Секция Contacts - растянута на всю ширину */
+        #contacts {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            height: 190px;
+            background-color: rgba(245, 245, 220, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 64px;
+            margin-top: 60px;
+            margin-bottom: -40px;
+        }
+        
+        .email-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-icon {
+            font-size: 36px;
+            margin-right: 20px;
+        }
+        
+        .email-address {
+            font-size: 24px;
+        }
+        
+        .gmail-text {
+            font-size: 24px;
+            margin-top: 11px;
+            margin-left: 56px;
+        }
+        
+        .social-section {
+            text-align: right;
+        }
+        
+        .social-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+        
+        .social-icon {
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхнее меню -->
+    <nav class="top-menu">
+        <div class="menu-bar">
+            <div class="menu-item">
+                <a href="index.html#about" class="menu-link">обо мне</a>
+            </div>
+            <div class="menu-item">
+                <a href="portfolio.html" class="menu-link">портфолио</a>
+                <div class="portfolio-dropdown">
+                    <div class="dropdown-item">
+                        <a href="index.html#reload" class="dropdown-link">Reload</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio.html" class="dropdown-link">творческие работы</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio2.html" class="dropdown-link">коммерческие работы</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="product.html" class="menu-link">продукт</a>
+            </div>
+            <div class="menu-item">
+                <a href="education.html" class="menu-link">образование</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое страницы -->
+    <main>
+        <h2 class="section-title">Коммерческие работы</h2>
+        
+        <!-- Бокс 1 - Bar uniform -->
+        <div class="clickable-box" id="box1">
+            <div class="box-images">
+                <img src="Images/р2/IMG_9866.PNG" class="box-image">
+                <img src="Images/р2/IMG_9884.PNG" class="box-image">
+                <img src="Images/р2/ллл.PNG" class="box-image">
+            </div>
+            <div class="box-title">Bar uniform</div>
+        </div>
+        <div class="expandable-content" id="content1">
+            <div class="scroll-hint">*чтобы увидеть конечный результат, можно промотать к концу проекта</div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9867.PNG">
+                <img src="Images/р2/б1/IMG_9866.PNG">
+            </div>
+            
+            <div class="centered-text">Для начала был изучен интерьер и особенности заведения</div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б1/IMG_9876.PNG" class="content-image-large">
+                <div class="content-text">
+                    Для каждой из позиций (<span class="highlight">security, администратор, бармен и официант</span>) был проведен персональный research - какие <span class="highlight">части тела, суставы задействованы</span>, какая одежда была бы удобна, <span class="highlight">изучена базовая</span> униформа.<br><br>
+                    А далее в соответствии с "космической" тематикой заведения составлены небольшие мудборды на каждую позицию. Источником послужили фильмы, сериалы, подиум и тп.
+                </div>
+            </div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9877.PNG">
+                <img src="Images/р2/б1/IMG_9868.PNG">
+            </div>
+            
+            <div class="centered-text">комбинезоны и фартуки для официантов</div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9873.PNG">
+                <img src="Images/р2/б1/IMG_9870.PNG">
+            </div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9869.PNG">
+                <img src="Images/р2/б1/IMG_9978.PNG">
+            </div>
+            
+            <div class="centered-text">Портупеи для барменов</div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б1/IMG_9961.PNG" class="content-image-large">
+                <div class="content-text">Вариации униформы для девушки Администратора</div>
+            </div>
+            
+            <!-- Первый ряд изображений -->
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9965.PNG">
+                <img src="Images/р2/б1/IMG_9964.PNG">
+            </div>
+            
+            <!-- Второй ряд изображений с текстом -->
+            <div class="content-row">
+                <div style="flex: 1;"></div>
+                <img src="Images/р2/б1/IMG_9962.PNG" class="content-image-large shifted-right">
+                <div class="content-text">Часть эскизов униформы для security</div>
+            </div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9884.PNG">
+                <img src="Images/р2/б1/IMG_9883.PNG">
+            </div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б1/IMG_9882.PNG">
+                <img src="Images/р2/б1/IMG_9881.PNG">
+            </div>
+        </div>
+
+        <!-- Бокс 2 - Basketball uniform -->
+        <div class="clickable-box" id="box2">
+            <div class="box-images">
+                <img src="Images/р2/IMG_9890.PNG" class="box-image">
+                <img src="Images/р2/IMG_9888.PNG" class="box-image">
+                <img src="Images/р2/щрщр.PNG" class="box-image">
+            </div>
+            <div class="box-title">Basketball uniform</div>
+        </div>
+        <div class="expandable-content" id="content2">
+            <div class="project-hint">*конкретно данный проект не является готовым коммерческим предложением, в отличие от двух остальных</div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б2/IMG_9979.PNG" class="content-image-large">
+                <div class="content-text text-top">
+                    Форма для баскетбольной команды. Для начала был составлен "<span class="highlight">портрет</span>" своей целевой аудитории, выбран <span class="highlight">источник</span>, цветовая <span class="highlight">палитра</span> и, как всегда, произведен research. В данном случае конкретно базовой баскетбольной формы, <span class="highlight">поиск аналогов, выбор ассортимента</span>.
+                </div>
+            </div>
+            
+            <img src="Images/р2/б2/IMG_9966.PNG" class="small-image">
+            
+            <div class="equal-height-pair">
+                <img src="Images/р2/б2/IMG_9972.PNG" class="enlarged-by-9">
+                <img src="Images/р2/б2/IMG_0002.PNG">
+            </div>
+            
+            <div class="centered-text">ассортимент - спортивные брюки(вне поля), спортивные легинсы под шорты, кроссы</div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б2/IMG_9967.PNG">
+                <img src="Images/р2/б2/IMG_9976.PNG">
+            </div>
+            
+            <div class="centered-text">Спортивные выездные сумки</div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б2/IMG_9969.PNG">
+                <img src="Images/р2/б2/IMG_9970.PNG">
+            </div>
+            
+            <div class="content-row">
+                <div style="flex: 1;"></div>
+                <img src="Images/р2/б2/IMG_9971.PNG" class="content-image-large shifted-right">
+                <div class="content-text multi-line-text">
+                    Эскизы женской баскетбольной формы<br>
+                    (перед и спинка)
+                </div>
+            </div>
+            
+            <img src="Images/р2/б2/IMG_9968.PNG" class="single-large-image">
+        </div>
+
+        <!-- Бокс 3 - Hotel uniform -->
+        <div class="clickable-box" id="box3">
+            <div class="box-images">
+                <img src="Images/р2/IMG_9886.PNG" class="box-image">
+                <img src="Images/р2/IMG_9885.PNG" class="box-image">
+            </div>
+            <div class="box-title">Hotel uniform</div>
+        </div>
+        <div class="expandable-content" id="content3">
+            <div class="hotel-hint">*представлена лишь часть эскизов</div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б3/IMG_9999.PNG" class="content-image-large">
+                <div class="hotel-text">
+                    Изучен <span class="highlight">брендбук</span> отеля с элементами этнического стиля, осмотрено помещение и выделены особенности, выбран <span class="highlight">летний+зимний ассортимент</span> для каждой позиции, собраны аналоги, <span class="highlight">подобраны ткани</span> по характеристикам и утверждены <span class="highlight">с заказчиком</span>.
+                    <div class="position-list">
+                        <div>официант</div>
+                        <div>работник клининга</div>
+                        <div>кондитер</div>
+                        <div>работник прачечной</div>
+                        <div>администратор (ресепшн)</div>
+                    </div>
+                    Свитшоты и футболки для "выездного ресторана"
+                </div>
+            </div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б3/IMG_9984.PNG" class="content-image-large">
+                <div class="content-text">Работник ресепшн. Вариации в крое, цвете и ассортименте</div>
+            </div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б3/IMG_9987.PNG" class="content-image-large">
+                <div class="content-text">Повар-кондитер. Китель и варианты головных уборов</div>
+            </div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б3/IMG_9986.PNG">
+                <img src="Images/р2/б3/IMG_9998.PNG" class="reduced-by-15">
+            </div>
+            
+            <div class="hotel-divider"></div>
+            
+            <div class="content-image-pair">
+                <img src="Images/р2/б3/IMG_0001.PNG">
+                <img src="Images\р2\б3\одод.PNG" style="height: 100%;" class="reduced-by-15">
+            </div>
+            
+            <div class="content-row">
+                <img src="Images/р2/б3/IMG_9980.PNG" class="content-image-large shifted-right-48">
+                <div class="content-text">Варианты зимней и летней униформы официанта девушки/парня(3)</div>
+            </div>
+            
+            <div class="uniform-pair">
+                <div class="uniform-item">
+                    <img src="Images\р2\б3\2222.PNG" class="uniform-item img">
+                    <div class="caption">Работник клининга</div>
+                </div>
+                <div class="uniform-item">
+                    <img src="Images\р2\б3\222.PNG" class="enlarged-uniform">
+                    <div class="caption">Работник прачечной</div>
+                </div>
+            </div>
+            
+            <div class="small-images-row">
+                <img src="Images/р2/б3/IMG_9990.PNG" class="equal-height-images">
+                <img src="Images/р2/б3/IMG_9991.PNG" class="equal-height-images">
+                <div class="small-images-text">
+                    Также варианты базовых футболок, оверсайз футболок с рукавом реглан, свитшотов. Для молодых работников "выездного ресторана"
+                </div>
+            </div>
+            
+            <div class="image-with-text">
+                <img src="Images/р2/б3/IMG_9988.PNG" class="shifted-right-135">
+                <div class="text">Дизайн скатертей для ресторана отеля</div>
+            </div>
+            
+            <div class="four-images-row">
+                <img src="Images/р2/б3/IMG_9994.PNG">
+                <img src="Images/р2/б3/IMG_9993.PNG">
+                <img src="Images/р2/б3/IMG_9995.PNG">
+                <img src="Images/р2/б3/IMG_9996.PNG">
+            </div>
+        </div>
+
+        <!-- Секция Contacts - растянута на всю ширину экрана -->
+        <section id="contacts">
+            <div class="email-section">
+                <i class="fas fa-envelope email-icon"></i>
+                <div>
+                    <div class="email-address">mamutovae3@mail.ru</div>
+                    <div class="gmail-text">/gmail.com</div>
+                </div>
+            </div>
+            <div class="social-section">
+                <div class="social-title">social media</div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчики для кликабельных боксов
+            document.getElementById('box1').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('content1').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content2').classList.remove('expanded-content');
+                document.getElementById('content3').classList.remove('expanded-content');
+            });
+
+            document.getElementById('box2').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('content2').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content1').classList.remove('expanded-content');
+                document.getElementById('content3').classList.remove('expanded-content');
+            });
+
+            document.getElementById('box3').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('content3').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content1').classList.remove('expanded-content');
+                document.getElementById('content2').classList.remove('expanded-content');
+            });
+        });
+    </script>
+</body>
+</html>

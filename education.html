@@ -1,0 +1,567 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Образование</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tektur', cursive;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 118px;
+        }
+        
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .top-menu {
+            position: fixed;
+            top: 18px;
+            left: 0;
+            width: 100%;
+            padding: 0 64px;
+            z-index: 100;
+            background-color: transparent;
+        }
+        
+        .menu-bar {
+            display: flex;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+        }
+        
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .menu-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 36px;
+            background-color: #f5f5dc;
+        }
+        
+        .menu-link {
+            font-family: 'Tektur', cursive;
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-link:hover {
+            color: #a0a0a0;
+        }
+        
+        .menu-link:active {
+            color: #707070;
+        }
+        
+        .portfolio-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            z-index: 60;
+        }
+        
+        .menu-item:hover .portfolio-dropdown {
+            max-height: 300px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 0;
+        }
+        
+        .dropdown-link {
+            font-family: 'Tektur', cursive;
+            font-size: 28px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-link:hover {
+            color: #a0a0a0;
+            background-color: rgba(245, 245, 220, 0.3);
+        }
+        
+        .dropdown-link:active {
+            color: #707070;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        main {
+            padding: 40px 64px;
+        }
+        
+        .education-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 48px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        
+        .education-item {
+            margin-bottom: 20px;
+        }
+        
+        .institution-name {
+            font-size: 45px;
+            margin-bottom: 5px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .institution-name:hover {
+            color: #90ac53;
+            transform: scale(1.1) translateX(20px);
+        }
+        
+        .institution-name::after {
+            content: "\f061";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .institution-name:hover::after {
+            transform: translateY(-50%) translateX(5px);
+        }
+        
+        .education-years {
+            font-size: 28px;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 40px 0;
+        }
+        
+        .photos-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-photo {
+            width: 22.46%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .side-photos {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 10.35%;
+            position: relative;
+        }
+        
+        .side-photo {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .location-text {
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.3;
+        }
+        
+        .vertical-divider {
+            width: 1px;
+            background-color: #f5f5dc;
+            margin: 0 15px;
+            align-self: stretch;
+        }
+        
+        .right-photo-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .right-main-photo {
+            width: 22.46%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .right-side-photo {
+            width: 36.8%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .education-description {
+            font-size: 24px;
+            line-height: 1.5;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .education-description p {
+            margin-bottom: 20px;
+        }
+        
+        .highlight {
+            background-color: rgba(245, 245, 220, 0.15);
+            padding: 2px 5px;
+        }
+        
+        .reload-text {
+            font-size: 20px;
+            margin-top: 30px;
+        }
+        
+        .reload-link {
+            text-decoration: underline;
+            color: #f5f5dc;
+        }
+        
+        .final-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 30px 0;
+        }
+        
+        .university-section {
+            margin-top: 60px;
+        }
+        
+        .university-name {
+            font-size: 45px;
+            margin-bottom: 5px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-right: 48px; /* Добавлено место для стрелки */
+        }
+        
+        .university-name:hover {
+            transform: scale(1.1) translateX(20px);
+        }
+        
+        .university-name::after {
+            content: "\f061";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 18px; /* Стрелка в 18px от текста справа */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .university-name:hover::after {
+            transform: translateY(-50%) translateX(5px);
+        }
+        
+        .university-years {
+            font-size: 28px;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .university-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .university-main-photo {
+            width: 50%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .university-right-column {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .university-text {
+            font-size: 24px;
+            line-height: 1.5;
+        }
+        
+        .university-small-photos {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .university-small-photo {
+            width: calc(50% - 7.5px);
+            height: auto;
+            object-fit: contain;
+            max-height: 378px;
+        }
+        
+        /* Секция с дипломами */
+        .diplomas-section {
+            margin-top: 60px;
+        }
+        
+        .diplomas-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 40px 0;
+        }
+        
+        .diplomas-text {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 60px;
+        }
+        
+        /* Секция контактов */
+        .contacts-section {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            height: 190px;
+            background-color: rgba(245, 245, 220, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+        .contacts-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 64px;
+        }
+        
+        .email-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-icon {
+            font-size: 36px;
+            margin-right: 20px;
+        }
+        
+        .email-address {
+            font-size: 24px;
+        }
+        
+        .gmail-text {
+            font-size: 24px;
+            margin-top: 11px;
+            margin-left: 56px;
+        }
+        
+        .social-section {
+            text-align: right;
+        }
+        
+        .social-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+        
+        .social-icon {
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-menu">
+        <div class="menu-bar">
+            <div class="menu-item">
+                <a href="index.html#about" class="menu-link">обо мне</a>
+            </div>
+            <div class="menu-item">
+                <a href="portfolio.html" class="menu-link">портфолио</a>
+                <div class="portfolio-dropdown">
+                    <div class="dropdown-item">
+                        <a href="index.html#reload" class="dropdown-link">Reload</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio.html" class="dropdown-link">творческие работы</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio2.html" class="dropdown-link">коммерческие работы</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="product.html" class="menu-link">продукт</a>
+            </div>
+            <div class="menu-item">
+                <a href="education.html" class="menu-link">образование</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <section class="education-section">
+            <h1 class="section-title">Профессиональное образование</h1>
+            
+            <div class="education-item">
+                <a href="https://compasscollege.art/ru" target="_blank" class="institution-name">1. Compass college</a>
+                <div class="education-years">2021-2023</div>
+            </div>
+            
+            <div class="divider-line"></div>
+            
+            <div class="photos-container">
+                <img src="Images\ed\2022-02-03_13_41_31_d4d630c0a21a4fff05837ac44603f1aa.jpg" class="main-photo">
+                <div class="side-photos">
+                    <img src="Images\ed\Снимок экрана (108).png" class="side-photo">
+                    <img src="Images\ed\images.png" class="side-photo">
+                    <div class="location-text">
+                        Bishkek<br>Kyrgyzstan
+                    </div>
+                </div>
+                
+                <div class="vertical-divider"></div>
+                
+                <img src="Images\ed\DSC_0119.jpg" class="right-main-photo">
+                <img src="Images\ed\db1dcd2628332f2fa2e4df24ada30347.jpg" class="right-side-photo">
+            </div>
+            
+            <div class="education-description">
+                <p>Учеба в "Compass college" - важный этап моей жизни.</p>
+                <p><span class="highlight">Тогда была заложены любовь и интерес к своему делу.</span></p>
+                <p>Упорство, бессонные ночи, наша усталость и радость от конечного результата - путь к совершенству.</p>
+                <p>Мы учились <span class="highlight">смотреть и видеть</span>, анализировать, любить и проникаться.</p>
+                <p>Не без падений и гор <span class="highlight">бесценного опыта</span> за ними.</p>
+                <p>Мастера своего дела сопровождали нас всю учебу и останутся в сердцах каждого на всю жизнь, ведь именно они открыли для нас внутренний мир модной индустрии.</p>
+                <p class="reload-text">"<a href="index.html#reload" class="reload-link">Reload</a>" - подведенный итог этого жизненного этапа, <span class="highlight">дипломная работа</span>.</p>
+            </div>
+            
+            <div class="final-divider"></div>
+        </section>
+        
+        <section class="education-section university-section">
+            <div class="education-item">
+                <a href="https://sutd.ru/" target="_blank" class="university-name">2. Санкт-Петербургский государственный университет промышленных технологий и дизайна</a>
+                <div class="university-years">2023-2027</div>
+            </div>
+            
+            <div class="university-content">
+                <img src="Images\ed\Снимок экрана (109).png" class="university-main-photo">
+                
+                <div class="university-right-column">
+                    <div class="university-text">
+                        Здесь случилось познание себя. Глубже, осознаннее.<br>
+                        Как человека, как художника, как дизайнера.
+                    </div>
+                    
+                    <div class="university-small-photos">
+                        <img src="Images\ed\photo_2025-05-15_20-42-12.jpg" class="university-small-photo">
+                        <img src="Images\ed\photo_2025-05-15_20-42-28.jpg" class="university-small-photo">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция с дипломами -->
+        <section class="diplomas-section">
+            <div class="diplomas-divider"></div>
+            <div class="diplomas-text">
+                Также дипломы об образовании:<br>
+                - Городской художественной школы. г.Бишкек.<br>
+                - Одиннадцати классов (Школа-гимназия №17 им. А.С.Пушкина)<br>
+                - Народный Хореографический Ансамбль Жаш-Канат.<br>
+                - Музыкальная школа №7. г.Бишкек
+            </div>
+        </section>
+        
+        <!-- Секция контактов -->
+        <section class="contacts-section">
+            <div class="contacts-container">
+                <div class="email-section">
+                    <i class="fas fa-envelope email-icon"></i>
+                    <div>
+                        <div class="email-address">mamutovae3@mail.ru</div>
+                        <div class="gmail-text">/gmail.com</div>
+                    </div>
+                </div>
+                <div class="social-section">
+                    <div class="social-title">social media</div>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Можно добавить скрипты при необходимости
+    </script>
+</body>
+</html>

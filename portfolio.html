@@ -1,0 +1,1110 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Творческие работы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tektur', cursive;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 118px;
+        }
+        
+        /* Убираем полосы прокрутки */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Верхнее меню */
+        .top-menu {
+            position: fixed;
+            top: 18px;
+            left: 0;
+            width: 100%;
+            padding: 0 64px;
+            z-index: 100;
+            background-color: transparent;
+        }
+        
+        .menu-bar {
+            display: flex;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+        }
+        
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .menu-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 36px;
+            background-color: #f5f5dc;
+        }
+        
+        .menu-link {
+            font-family: 'Tektur', cursive;
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-link:hover {
+            color: #a0a0a0;
+        }
+        
+        .menu-link:active {
+            color: #707070;
+        }
+        
+        /* Выпадающее меню */
+        .portfolio-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            z-index: 60;
+        }
+        
+        .menu-item:hover .portfolio-dropdown {
+            max-height: 300px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 0;
+        }
+        
+        .dropdown-link {
+            font-family: 'Tektur', cursive;
+            font-size: 28px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-link:hover {
+            color: #a0a0a0;
+            background-color: rgba(245, 245, 220, 0.3);
+        }
+        
+        .dropdown-link:active {
+            color: #707070;
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Основное содержимое */
+        main {
+            padding: 40px 64px;
+        }
+        
+        /* Заголовок раздела */
+        .section-title {
+            font-family: 'Tektur', cursive;
+            font-weight: 300;
+            font-size: 24px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+            color: rgba(245, 245, 220, 0.7);
+        }
+        
+        /* Галерея карточек */
+        .cards-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 70px;
+            margin-bottom: 100px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+        
+        .cards-container {
+            display: inline-block;
+            flex: 0 0 auto;
+        }
+        
+        .card-stack {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .card-stack:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            will-change: transform;
+            background-color: transparent;
+            border: none;
+        }
+        
+        /* Стандартный порядок карт */
+        .card:nth-child(1) {
+            transform: rotate(-5deg);
+            z-index: 4;
+        }
+        
+        .card:nth-child(2) {
+            transform: rotate(3deg) translateY(8px);
+            z-index: 3;
+            opacity: 0.9;
+        }
+        
+        .card:nth-child(3) {
+            transform: rotate(-2deg) translateY(15px);
+            z-index: 2;
+            opacity: 0.8;
+        }
+        
+        .card:nth-child(4) {
+            transform: rotate(4deg) translateY(22px);
+            z-index: 1;
+            opacity: 0.7;
+        }
+        
+        /* Особый порядок для третьей колоды без прозрачности */
+        #thirdStack .card:nth-child(1) {
+            transform: rotate(3deg) translateY(8px);
+            z-index: 3;
+            opacity: 1;
+        }
+        
+        #thirdStack .card:nth-child(2) {
+            transform: rotate(-5deg);
+            z-index: 4;
+            opacity: 1;
+        }
+        
+        #thirdStack .card:nth-child(3) {
+            transform: rotate(-2deg) translateY(15px);
+            z-index: 2;
+            opacity: 1;
+        }
+        
+        #thirdStack .card:nth-child(4) {
+            transform: rotate(4deg) translateY(22px);
+            z-index: 1;
+            opacity: 1;
+        }
+        
+        /* Состояние развернутых карт */
+        .cards-container.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .cards-container.expanded .card-stack {
+            position: relative;
+            width: auto;
+            height: 80vh;
+            display: flex;
+            transform: none !important;
+            cursor: default;
+        }
+        
+        .cards-container.expanded .card {
+            position: relative;
+            width: auto;
+            min-width: 300px;
+            height: 100%;
+            margin: 0 15px;
+            opacity: 1;
+            transform: none !important;
+            flex-shrink: 0;
+            border: none;
+        }
+        
+        .close-expanded {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 36px;
+            color: #f5f5dc;
+            cursor: pointer;
+            z-index: 1001;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .close-expanded:hover {
+            opacity: 1;
+        }
+
+        /* Секция 2 - Разделительная полоса */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 60px 0;
+        }
+
+        /* Кликабельные боксы */
+        .clickable-box {
+            display: flex;
+            align-items: center;
+            background-color: rgba(245, 245, 220, 0.1);
+            padding: 60px 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .clickable-box:hover {
+            transform: scale(1.02);
+        }
+
+        .box-images {
+            display: flex;
+            gap: 30px;
+            margin-right: 40px;
+            align-items: center;
+        }
+
+        .box-image {
+            width: auto;
+            height: 250px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        .box-title {
+            font-family: 'Tektur', cursive;
+            font-size: 48px;
+            font-weight: 700;
+            color: #f5f5dc;
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        /* Секция с раскрывающимся контентом */
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background-color: rgba(245, 245, 220, 0.15);
+        }
+
+        .expanded-content {
+            max-height: 5000px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стили для содержимого бокса 2 */
+        #content2 .content-image {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+            margin-right: 40px;
+        }
+
+        /* Стили для содержимого бокса 3 */
+        #content3 .content-image {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+            margin-right: 40px;
+        }
+
+        /* Секция контактов */
+        #contacts {
+            width: 100vw;
+            height: 190px;
+            background-color: rgba(245, 245, 220, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 64px;
+            margin-top: 60px;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+        }
+
+        .email-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .email-icon {
+            font-size: 36px;
+            margin-right: 20px;
+        }
+
+        .email-address {
+            font-size: 24px;
+        }
+
+        .gmail-text {
+            font-size: 24px;
+            margin-top: 11px;
+            margin-left: 56px;
+        }
+
+        .social-section {
+            text-align: right;
+        }
+
+        .social-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+
+        .social-icon {
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+        }
+
+        /* Стили для контента бокса 2 */
+        .content-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .content-text {
+            flex: 1;
+            font-size: 24px;
+            line-height: 1.6;
+            padding: 0 40px;
+        }
+
+        .content-image-large {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .content-image-pair {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .content-image-pair img {
+            width: 45%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .collage-text {
+            text-align: center;
+            font-size: 24px;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        /* Обновленные стили для галереи из 5 изображений */
+        .five-image-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0 30px 0;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .five-image-row img {
+            height: 500px;
+            width: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        /* Новые стили для бокса 3 */
+        .content-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 20px 0;
+        }
+
+        .centered-text {
+            text-align: center;
+            font-size: 24px;
+            margin: 10px 0 20px;
+        }
+
+        .large-image-pair {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .large-image-pair img {
+            width: 50%;
+            max-width: 700px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .centered-pair {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .centered-pair img {
+            max-height: 500px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .single-image {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .single-image img {
+            width: 60%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Новые стили для галереи в боксе 2 */
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .image-gallery img {
+            width: 30%;
+            max-width: 400px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Стиль для уменьшенного изображения в боксе 2 */
+        .smaller-image {
+            width: 35% !important;
+            max-width: 450px !important;
+        }
+
+        /* Новые стили для содержимого бокса 1 (RELOAD) */
+        .gallery-toggle-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(245, 245, 220, 0.2);
+            padding: 10px 20px;
+            height: 50px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            color: #f5f5dc;
+        }
+
+        .arrow-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon.down {
+            transform: rotate(0deg);
+        }
+
+        .arrow-icon.up {
+            transform: rotate(180deg);
+        }
+
+        .gallery-content {
+            display: none;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .gallery-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-image {
+            width: 22%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .video-row {
+            display: flex;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .video-container {
+            width: 50%;
+        }
+
+        .video-container video {
+            width: 70%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .video-text {
+            width: 50%;
+            padding-left: 40px;
+            font-size: 24px;
+        }
+
+        /* Новые стили для обновленного содержимого бокса 1 */
+        .inspiration-row {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .inspiration-image {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .inspiration-text {
+            width: 50%;
+            padding-left: 40px;
+            font-size: 24px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background-color: rgba(245, 245, 220, 0.1);
+            padding: 0 2px;
+        }
+
+        .scroll-link {
+            color: #b7410e;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .scroll-link:hover {
+            color: #d35400;
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .image-row img {
+            width: 48%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .image-with-text {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .image-with-text img {
+            width: 50%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .image-with-text .text {
+            width: 50%;
+            padding-left: 40px;
+            font-size: 24px;
+        }
+
+        .final-text {
+            font-size: 24px;
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхнее меню -->
+    <nav class="top-menu">
+        <div class="menu-bar">
+            <div class="menu-item">
+                <a href="index.html#about" class="menu-link">обо мне</a>
+            </div>
+            <div class="menu-item">
+                <a href="portfolio.html" class="menu-link">портфолио</a>
+                <div class="portfolio-dropdown">
+                    <div class="dropdown-item">
+                        <a href="index.html#reload" class="dropdown-link">Reload</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio.html" class="dropdown-link">творческие работы</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio2.html" class="dropdown-link">коммерческие работы</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="product.html" class="menu-link">продукт</a>
+            </div>
+            <div class="menu-item">
+                <a href="education.html" class="menu-link">образование</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое страницы -->
+    <main>
+        <h2 class="section-title">Творческие работы</h2>
+        
+        <!-- Ряд с колодами карточек -->
+        <div class="cards-row">
+            <!-- Первая галерея карточек -->
+            <div class="cards-container" id="cardsContainer1">
+                <div class="card-stack" id="firstStack">
+                    <div class="card" style="background-image: url('Images/p1/IMG_9836.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9837.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9838.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9835.PNG')"></div>
+                </div>
+            </div>
+            
+            <!-- Вторая галерея карточек -->
+            <div class="cards-container" id="cardsContainer2">
+                <div class="card-stack" id="secondStack">
+                    <div class="card" style="background-image: url('Images/p1/IMG_9843.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9842.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9841.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9174.JPG')"></div>
+                </div>
+            </div>
+            
+            <!-- Третья галерея карточек без прозрачности -->
+            <div class="cards-container" id="cardsContainer3">
+                <div class="card-stack" id="thirdStack">
+                    <div class="card" style="background-image: url('Images/p1/IMG_9847.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9848.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9846.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9849.PNG')"></div>
+                </div>
+            </div>
+            
+            <!-- Четвертая галерея карточек -->
+            <div class="cards-container" id="cardsContainer4">
+                <div class="card-stack" id="fourthStack">
+                    <div class="card" style="background-image: url('Images/p1/IMG_9840.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9839.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9316.JPG')"></div>
+                </div>
+            </div>
+            
+            <!-- Пятая галерея карточек -->
+            <div class="cards-container" id="cardsContainer5">
+                <div class="card-stack" id="fifthStack">
+                    <div class="card" style="background-image: url('Images/p1/IMG_9844.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9845.PNG')"></div>
+                    <div class="card" style="background-image: url('Images/p1/IMG_9275.JPG')"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция 2 - Разделительная полоса -->
+        <div class="section-divider"></div>
+
+        <!-- Бокс 1 - RELOAD -->
+        <div class="clickable-box" id="box1">
+            <div class="box-images">
+                <img src="Images/IMG_6968%20(2).JPG" class="box-image">
+                <img src="Images/IMG_7002%20(3).JPG" class="box-image">
+                <img src="Images/IMG_6946%20(2).JPG" class="box-image">
+            </div>
+            <div class="box-title">RELOAD</div>
+        </div>
+        <div class="expandable-content" id="content1">
+            <div class="gallery-toggle-box" id="galleryToggle">
+                <div class="gallery-title">Галерея фотографий коллекции</div>
+                <i class="fas fa-chevron-down arrow-icon down"></i>
+            </div>
+            <div class="gallery-content" id="galleryContent">
+                <div class="gallery-row">
+                    <img src="Images/p1/2s/IMG_6968.JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_6946.JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_7004%20(2).JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_6966.JPG" class="gallery-image">
+                </div>
+                <div class="gallery-row">
+                    <img src="Images/p1/2s/IMG_6938.JPG" class="gallery-image">
+                    <img src="Images\p1\2s\IMG_7668.png" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_7002%20(2).JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_7995.PNG" class="gallery-image">
+                </div>
+                <div class="gallery-row">
+                    <img src="Images/p1/2s/IMG_6995%20(3).JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_7998.PNG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_6979.JPG" class="gallery-image">
+                    <img src="Images/p1/2s/IMG_7997.PNG" class="gallery-image">
+                </div>
+            </div>
+            <div class="video-row">
+                <div class="video-container">
+                    <video autoplay loop muted>
+                        <source src="Images/p1/2s/IMG_0087.MOV" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+                <div class="video-text">Немножко процесса создания</div>
+            </div>
+            
+            <div class="inspiration-row">
+                <img src="Images/p1/2s/IMG_0088.PNG" class="inspiration-image">
+                <div class="inspiration-text">
+                    Мое вдохновение начиналось с книг и тогда я горела идеями <span class="highlight">постапокалипсиса</span>, <span class="highlight">его философии</span> и того, какой у каждого <span class="highlight">творца</span> он разный. Это всегда невероятный сюжет <span class="highlight">о настоящей жизни</span>, ее радостях и другой ее стороне. О <span class="highlight">каждом из нас</span>, в каком-то его проявлении.<br><br>
+                    Цикл из 5 книг "Гниль и Руины", "Прах и Тлен"... <span class="highlight">Джонатана Мейберри</span> положил начало моей работе.<br><br>
+                    Далее шли сериалы, фильмы, музыка, видеоигры, комиксы.
+                </div>
+            </div>
+            
+            <div class="image-with-text">
+                <img src="Images/p1/2s/IMG_0106.PNG" class="inspiration-image">
+                <div class="inspiration-text">
+                    При исследовании подиума в этой тематике безумно впечатляли дизайнеры, художники, которые излагали <span class="highlight">свою</span> суть апокалипсиса абсолютно по-разному, вкладывая в нее мысли и <span class="highlight">душу</span>, <span class="highlight">вдохновение</span>, <span class="highlight">переживания</span>.
+                </div>
+            </div>
+            
+            <div class="image-with-text">
+                <img src="Images/p1/2s/IMG_0089.PNG">
+                <div class="text">Кусочек форэскизов и мыслей, небольших заметок</div>
+            </div>
+            
+            <div class="image-row">
+                <img src="Images/p1/2s/IMG_7262.JPG">
+                <img src="Images/p1/2s/IMG_7263.JPG">
+            </div>
+            
+            <div class="inspiration-row">
+                <div class="inspiration-text">После форэскизов следовали и финальные эскизы.</div>
+            </div>
+            
+            <div class="final-text">
+                До самого завершения работы над этой коллекцией не покидало <span class="highlight">ощущение предвкушения</span>, ведь никогда не знаешь, что в нашем деле выйдет в итоге, даже если все тщательно спланировал. В этом есть <span class="highlight">своя прелесть</span>. Поэтому то, что получилось, можно посмотреть <a href="#galleryToggle" class="scroll-link">здесь</a>.
+            </div>
+        </div>
+
+        <!-- Бокс 2 - FROM THE ICY SHORES -->
+        <div class="clickable-box" id="box2">
+            <div class="box-images">
+                <img src="Images/p1/3s/IMG_9857.PNG" class="box-image">
+            </div>
+            <div class="box-title">FROM THE ICY SHORES</div>
+        </div>
+        <div class="expandable-content" id="content2">
+            <div class="content-row">
+                <img src="Images/p1/3s/IMG_9854.PNG" class="content-image-large">
+                <div class="content-text">
+                    Эклектика этники, спорта и авангарда<br><br>
+                    Истоки коллекции исходят из Кыргызского этнического костюма. А именно его элементы, формы и силуэты, многослойность.
+                </div>
+            </div>
+            <div class="content-row">
+                <img src="Images/p1/3s/IMG_9857.PNG" class="content-image-large">
+                <div class="content-text">
+                    Но если еще подробнее, то и сама картина жизни кыргызского народа в высокогорьях. Ледники - гордость Кыргызстана - холод, жизнь и бесконечная свобода.
+                </div>
+            </div>
+            <div class="content-row">
+                <img src="Images/p1/3s/IMG_9853.PNG" class="content-image-large">
+                <div class="content-text">
+                    Поиск форм, силуэтов, цвета. На основе источника и исследований спортивной и этнической одежды
+                </div>
+            </div>
+            <div class="content-image-pair">
+                <img src="Images/p1/3s/IMG_9852%20(2).PNG">
+                <img src="Images/p1/3s/IMG_9851.PNG">
+            </div>
+            <div class="collage-text">
+                Эскизная часть созданная с помощью метода коллажа
+            </div>
+            <div class="content-row">
+                <img src="Images/p1/3s/IMG_9855.PNG" class="smaller-image">
+                <div class="content-text">
+                    Был выбран один из эскизов.<br><br>
+                    А также внесены правки в ходе процесса работы и на основе данного эскиза создан костюм.
+                </div>
+            </div>
+            <div class="image-gallery">
+                <img src="Images/p1/3s/IMG_4063.JPG">
+                <img src="Images/p1/3s/IMG_4067.JPG">
+                <img src="Images/p1/3s/IMG_4064.JPG">
+            </div>
+        </div>
+
+        <!-- Бокс 3 - WEDDING COLLECTION -->
+        <div class="clickable-box" id="box3">
+            <div class="box-images">
+                <img src="Images/p1/4s/IMG_9858.PNG" class="box-image">
+                <img src="Images/p1/4s/IMG_9861.PNG" class="box-image">
+                <img src="Images/p1/4s/IMG_9860.PNG" class="box-image">
+            </div>
+            <div class="box-title">WEDDING COLLECTION</div>
+        </div>
+        <div class="expandable-content" id="content3">
+            <div class="content-row">
+                <img src="Images/p1/4s/IMG_9862.PNG" class="content-image-large">
+                <div class="content-text">
+                    Свадебная коллекция с тематикой Off-road. Нестандартная организация свадьбы, и, очевидно, невеста. Выезды на внедорожниках, узкий круг гостей, откровенный наряд и уверенность в себе и своей неотразимости - кому-то это по душе.
+                </div>
+            </div>
+            <div class="centered-pair">
+                <img src="Images/p1/4s/IMG_9859.PNG">
+                <img src="Images/p1/4s/IMG_9953.PNG">
+            </div>
+            <div class="centered-text">
+                В результате исследований тематики, стиля и подиума были разработаны форэскизы свадебной коллекции
+            </div>
+            <div class="five-image-row">
+                <img src="Images/p1/4s/IMG_9952.PNG">
+                <img src="Images/p1/4s/IMG_9947.PNG">
+                <img src="Images/p1/4s/IMG_9949.PNG">
+                <img src="Images/p1/4s/IMG_9960.PNG">
+                <img src="Images/p1/4s/IMG_9946.PNG">
+            </div>
+            <div class="content-divider"></div>
+            <div class="centered-text">
+                А далее и финальные эскизы
+            </div>
+            <div class="large-image-pair">
+                <img src="Images/p1/4s/IMG_9955.PNG">
+                <img src="Images/p1/4s/IMG_9956.PNG">
+            </div>
+            <div class="large-image-pair">
+                <img src="Images/p1/4s/IMG_9957.PNG">
+                <img src="Images/p1/4s/IMG_9958.PNG">
+            </div>
+            <div class="single-image">
+                <img src="Images/p1/4s/IMG_9959.PNG">
+            </div>
+        </div>
+
+        <!-- Секция контактов -->
+        <section id="contacts">
+            <div class="email-section">
+                <i class="fas fa-envelope email-icon"></i>
+                <div>
+                    <div class="email-address">mamutovae3@mail.ru</div>
+                    <div class="gmail-text">/gmail.com</div>
+                </div>
+            </div>
+            <div class="social-section">
+                <div class="social-title">social media</div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчики для всех колод
+            const cardContainers = [
+                { container: document.getElementById('cardsContainer1'), stack: document.getElementById('firstStack') },
+                { container: document.getElementById('cardsContainer2'), stack: document.getElementById('secondStack') },
+                { container: document.getElementById('cardsContainer3'), stack: document.getElementById('thirdStack') },
+                { container: document.getElementById('cardsContainer4'), stack: document.getElementById('fourthStack') },
+                { container: document.getElementById('cardsContainer5'), stack: document.getElementById('fifthStack') }
+            ];
+
+            cardContainers.forEach(item => {
+                item.stack.addEventListener('click', function() {
+                    toggleExpandedView(item.container);
+                });
+            });
+            
+            // Общая функция для развертывания/свертывания
+            function toggleExpandedView(container) {
+                if (!container.classList.contains('expanded')) {
+                    // Развертываем карты
+                    container.classList.add('expanded');
+                    
+                    // Создаем кнопку закрытия
+                    const closeBtn = document.createElement('div');
+                    closeBtn.className = 'close-expanded';
+                    closeBtn.innerHTML = '&times;';
+                    closeBtn.addEventListener('click', function() {
+                        closeExpandedView(container);
+                    });
+                    document.body.appendChild(closeBtn);
+                }
+            }
+            
+            // Закрытие развернутого вида
+            function closeExpandedView(container) {
+                container.classList.remove('expanded');
+                const closeBtn = document.querySelector('.close-expanded');
+                if (closeBtn) {
+                    closeBtn.remove();
+                }
+            }
+            
+            // Закрытие по клику вне карт (для всех контейнеров)
+            const allContainers = document.querySelectorAll('.cards-container');
+            allContainers.forEach(container => {
+                container.addEventListener('click', function(e) {
+                    if (e.target === this && container.classList.contains('expanded')) {
+                        closeExpandedView(container);
+                    }
+                });
+            });
+
+            // Обработчики для кликабельных боксов
+            document.getElementById('box1').addEventListener('click', function() {
+                document.getElementById('content1').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content2').classList.remove('expanded-content');
+                document.getElementById('content3').classList.remove('expanded-content');
+                // Предотвращаем прокрутку
+                if (document.getElementById('content1').classList.contains('expanded-content')) {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            document.getElementById('box2').addEventListener('click', function() {
+                document.getElementById('content2').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content1').classList.remove('expanded-content');
+                document.getElementById('content3').classList.remove('expanded-content');
+                // Предотвращаем прокрутку
+                if (document.getElementById('content2').classList.contains('expanded-content')) {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            document.getElementById('box3').addEventListener('click', function() {
+                document.getElementById('content3').classList.toggle('expanded-content');
+                // Закрываем другие открытые блоки
+                document.getElementById('content1').classList.remove('expanded-content');
+                document.getElementById('content2').classList.remove('expanded-content');
+                // Предотвращаем прокрутку
+                if (document.getElementById('content3').classList.contains('expanded-content')) {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            // Обработчик для галереи в боксе 1
+            document.getElementById('galleryToggle').addEventListener('click', function(e) {
+                e.stopPropagation();
+                const galleryContent = document.getElementById('galleryContent');
+                const arrowIcon = this.querySelector('.arrow-icon');
+                
+                if (galleryContent.style.display === 'block') {
+                    galleryContent.style.display = 'none';
+                    arrowIcon.classList.remove('up');
+                    arrowIcon.classList.add('down');
+                } else {
+                    galleryContent.style.display = 'block';
+                    arrowIcon.classList.remove('down');
+                    arrowIcon.classList.add('up');
+                }
+            });
+
+            // Обработчик для кнопки "здесь"
+            document.querySelector('.scroll-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                const element = document.getElementById('galleryToggle');
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - (window.innerHeight / 2);
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

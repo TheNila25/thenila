@@ -1,0 +1,678 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nila</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tektur', cursive;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Убираем полосы прокрутки */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Шапка с анимацией */
+        header {
+            padding: 12px 0 0 12px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .logo-container {
+            display: inline-block;
+            background-color: rgba(245, 245, 220, 0.2);
+            padding: 10px 20px;
+            transition: all 0.5s ease;
+        }
+        
+        .logo {
+            font-family: 'Tektur', cursive;
+            font-size: 64px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.5s ease;
+        }
+        
+        /* Основное содержимое */
+        main {
+            padding-bottom: 250px;
+        }
+        
+        /* Секция с полноэкранным изображением */
+        .fullscreen-image {
+            width: 100%;
+            height: 100vh;
+            background-image: url("Images/100_2608.JPG");
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 0;
+        }
+        
+        /* Секция "Обо мне" */
+        #about {
+            min-height: 40vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            scroll-margin-top: 100px;
+            margin-top: -30px;
+            padding-top: 80px;
+        }
+        
+        .about-text {
+            max-width: 800px;
+            font-size: 24px;
+            line-height: 1.6;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+        }
+        
+        /* Секция Reload */
+        #reload {
+            min-height: 50vh;
+            padding: 20px 0 0 0;
+            scroll-margin-top: 80px;
+            overflow: visible;
+            margin-bottom: 40px;
+        }
+        
+        .reload-title {
+            font-size: 48px;
+            font-weight: 400;
+            text-align: left;
+            margin: 0 0 20px 64px;
+            letter-spacing: 1px;
+        }
+        
+        .photo-strip-container {
+            position: relative;
+            width: 100%;
+            height: 341px;
+            overflow: visible;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .photo-strip {
+            display: flex;
+            height: 341px;
+            width: max-content;
+            gap: 18px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            will-change: transform;
+        }
+        
+        .photo-item {
+            height: 341px;
+            width: 341px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            flex-shrink: 0;
+            object-fit: cover;
+            transition: transform 0.3s ease, z-index 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .photo-item:hover {
+            transform: scale(2);
+            z-index: 100;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        
+        /* Секция Reflection */
+        #reflection {
+            padding: 0 64px;
+            scroll-margin-top: 100px;
+            margin-bottom: 40px;
+        }
+        
+        #reflection p {
+            margin-bottom: 30px;
+            font-size: 24px;
+            line-height: 1.6;
+            text-align: left;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background-color: #f5f5dc;
+            margin: 40px 0;
+        }
+        
+        .highlight {
+            background-color: rgba(245, 245, 220, 0.15);
+            padding: 0 2px;
+        }
+        
+        /* Секция Collection */
+        #collection {
+            padding: 0 0 40px 0;
+            scroll-margin-top: 100px;
+        }
+        
+        .collection-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .collection-photo {
+            width: 800px;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .collection-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(245, 245, 220, 0.3);
+        }
+        
+        .photo-left {
+            margin-left: 57px;
+        }
+        
+        .photo-right {
+            margin-right: 57px;
+            margin-left: auto;
+        }
+        
+        .collection-caption {
+            font-size: 32px;
+            line-height: 1.4;
+            max-width: 400px;
+            margin-left: 20px; /* Сдвиг вправо на 20px */
+        }
+        
+        .right-caption {
+            margin-left: auto;
+            margin-right: 20px;
+            text-align: left;
+            padding-right: 0;
+        }
+        
+        /* Секция Contacts */
+        #contacts {
+            width: 100%;
+            height: 190px;
+            background-color: rgba(245, 245, 220, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 64px;
+        }
+        
+        .email-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-icon {
+            font-size: 36px;
+            margin-right: 20px;
+        }
+        
+        .email-address {
+            font-size: 24px;
+        }
+        
+        .gmail-text {
+            font-size: 24px;
+            margin-top: 11px;
+            margin-left: 56px;
+        }
+        
+        .social-section {
+            text-align: right;
+        }
+        
+        .social-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+        
+        .social-icon {
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+        }
+        
+        /* Футер с меню */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0 64px 12px 64px;
+            z-index: 50;
+        }
+        
+        .menu-bar {
+            display: flex;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0; /* Убрано скругление углов */
+        }
+        
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .menu-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 36px;
+            background-color: #f5f5dc;
+        }
+        
+        .menu-link {
+            font-family: 'Tektur', cursive;
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        
+        .menu-link:hover {
+            color: #d8d8c0;
+        }
+        
+        /* Выпадающее меню для портфолио */
+        .portfolio-dropdown {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0; /* Убрано скругление углов */
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            z-index: 60;
+        }
+        
+        .menu-item:hover .portfolio-dropdown {
+            max-height: 300px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 0;
+        }
+        
+        .dropdown-link {
+            font-family: 'Tektur', cursive;
+            font-size: 28px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        
+        .dropdown-link:hover {
+            color: #d8d8c0;
+            background-color: rgba(245, 245, 220, 0.3);
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Класс для анимации логотипа */
+        .logo-scrolled {
+            transform: translateX(-20px) scale(0.9);
+            opacity: 0.8;
+        }
+        
+        .logo-container-scrolled {
+            padding: 8px 10px 8px 16px;
+            background-color: rgba(245, 245, 220, 0.15);
+        }
+    </style>
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header id="mainHeader">
+        <div class="logo-container" id="logoContainer">
+            <a href="#" class="logo" id="mainLogo">The Nila</a>
+        </div>
+    </header>
+    
+    <!-- Основное содержимое -->
+    <main>
+        <!-- Секция 1: Полноэкранное изображение -->
+        <section class="fullscreen-image"></section>
+        
+        <!-- Секция 2: Обо мне -->
+        <section id="about">
+            <div class="about-text">
+                <p>Искусство - это внутренний мир.</p>
+                <p>Наши уши и глаза. И бесконечное пространство внутри нас, цвет и состояние которого проявляет в материальном каждый своим путем.</p>
+            </div>
+        </section>
+        
+        <!-- Секция 3: Reload -->
+        <section id="reload">
+            <h2 class="reload-title">Reload</h2>
+            <div class="photo-strip-container" id="photoContainer">
+                <div class="photo-strip" id="photoStrip">
+                    <div class="photo-item" style="background-image: url('Images/IMG_6938%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7002%20(3).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7668-_2_.png')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_6968%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_6966%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_6995%20(3).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_6946%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7995%20(2).PNG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7998%20(2).PNG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_6979%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7004%20(3).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7957%20(2).JPG')"></div>
+                    <div class="photo-item" style="background-image: url('Images/IMG_7997%20(2).PNG')"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 4: Размышления -->
+        <section id="reflection">
+            <div class="divider-line"></div>
+            
+            <p>Мы живём в такое время, когда не знаешь что случится через неделю, два дня, завтра, через час. Мир в наше время - сплошной хаос. И <span class="highlight">этот хаос устроил Человек.</span></p>
+            
+            <p>Мы становимся все дальше от природы. <span class="highlight">От мира, в котором мы родились и должны жить.</span> Мы - маленькая частичка в природной системе. И мы <span class="highlight">отторгаем</span> эту часть себя.</p>
+            
+            <p><span class="highlight">Но природа циклична.</span> Она возвращает все на свои места, все как по таймеру. А время идет...</p>
+            
+            <p>Это не просто так. Это мы имеем как <span class="highlight">следствие человеческих вмешательств</span> - Землетрясения, пожары, наводнения, циклоны и цунами, дожди. Глобальное потепление, которое сейчас у всех на слуху? А может и даже <span class="highlight">ледниковый период.</span></p>
+            
+            <p>В эти времена земля запускает <span class="highlight">перезагрузку.</span> Каждые сто тысяч лет, она заставляет себе <span class="highlight">вернуть все</span> то, что человечество отнимает у нее снова и снова. Мы идём к точке невозврата, мы роем себе яму. <u>Это</u> перезапуск, <u>Это</u> ещё один… Ещё один новый <span class="highlight">шанс для человечества</span> исправить свои ошибки.</p>
+            
+            <p>Отсюда следует название коллекции - "перезагрузка"</p>
+            
+            <p>За пеленой фантастики, главная <span class="highlight">цель</span> моей коллекции это <span class="highlight">призыв задуматься как о мировой проблеме, так и каждый о себе.</span> Как однажды было сказано Махатмой Ганди - "<u>хочешь изменить мир - начни с себя</u>". <span class="highlight">Это призыв начать менять мир и выбрать правильный путь к нашему светлому будущему.</span></p>
+            
+            <div class="divider-line"></div>
+        </section>
+
+        <!-- Секция 5: Коллекция -->
+        <section id="collection">
+            <div class="collection-row">
+                <img src="Images/IMG_9598.PNG" class="collection-photo photo-left">
+                <div class="collection-caption">Moodboard for collection</div> <!-- Измененная надпись -->
+            </div>
+            <div class="collection-row">
+                <div class="collection-caption right-caption">Final sketches of the collection</div>
+                <img src="Images/IMG_9601.PNG" class="collection-photo photo-right">
+            </div>
+            <div class="collection-row">
+                <img src="Images/IMG_9602.PNG" class="collection-photo photo-left">
+                <div class="collection-caption">Подробнее о создании коллекции вы можете посмотреть в разделе "портфолио" - "творческие работы" - "reload. А также галерею фотографий коллекции"</div>
+            </div>
+        </section>
+
+        <!-- Секция 6: Контакты -->
+        <section id="contacts">
+            <div class="email-section">
+                <i class="fas fa-envelope email-icon"></i>
+                <div>
+                    <div class="email-address">mamutovae3@mail.ru</div>
+                    <div class="gmail-text">/gmail.com</div>
+                </div>
+            </div>
+            <div class="social-section">
+                <div class="social-title">social media</div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Футер с меню -->
+    <footer>
+        <nav class="menu-bar">
+            <div class="menu-item">
+                <a href="index.html#about" class="menu-link">обо мне</a>
+            </div>
+            <div class="menu-item">
+                <a href="portfolio.html" class="menu-link">портфолио</a>
+                <div class="portfolio-dropdown">
+                    <div class="dropdown-item">
+                        <a href="index.html#reload" class="dropdown-link">Reload</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio.html" class="dropdown-link">творческие работы</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio2.html" class="dropdown-link">коммерческие работы</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="product.html" class="menu-link">продукт</a>
+            </div>
+            <div class="menu-item">
+                <a href="education.html" class="menu-link">образование</a>
+            </div>
+        </nav>
+    </footer>
+
+    <script>
+        // Скрипт для плавного скролла ленты фотографий
+        const container = document.getElementById('photoContainer');
+        const strip = document.getElementById('photoStrip');
+        
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let position = { left: 0, x: 0 };
+        let animationFrame;
+        let velocity = 0;
+        let lastTime = 0;
+        const friction = 0.9;
+
+        // Рассчитываем общую ширину ленты
+        const updateStripWidth = () => {
+            const items = document.querySelectorAll('.photo-item');
+            const gap = 18;
+            let totalWidth = 0;
+            
+            items.forEach(item => {
+                totalWidth += item.offsetWidth + gap;
+            });
+            
+            strip.style.width = `${totalWidth}px`;
+        };
+
+        // Инициализация
+        updateStripWidth();
+        window.addEventListener('resize', updateStripWidth);
+
+        // Обработчики для мыши
+        container.addEventListener('mousedown', (e) => {
+            isDown = true;
+            container.style.cursor = 'grabbing';
+            startX = e.clientX;
+            position = {
+                left: strip.offsetLeft,
+                x: e.clientX
+            };
+            cancelAnimationFrame(animationFrame);
+        });
+
+        container.addEventListener('mouseleave', () => {
+            if (!isDown) return;
+            isDown = false;
+            container.style.cursor = 'grab';
+            animateScroll();
+        });
+
+        container.addEventListener('mouseup', () => {
+            if (!isDown) return;
+            isDown = false;
+            container.style.cursor = 'grab';
+            animateScroll();
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            
+            const dx = e.clientX - position.x;
+            velocity = dx * 1.5;
+            
+            strip.style.left = `${position.left + dx}px`;
+        });
+
+        // Для тач-устройств
+        container.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].clientX;
+            position = {
+                left: strip.offsetLeft,
+                x: e.touches[0].clientX
+            };
+            cancelAnimationFrame(animationFrame);
+        });
+
+        container.addEventListener('touchend', () => {
+            if (!isDown) return;
+            isDown = false;
+            animateScroll();
+        });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            
+            const dx = e.touches[0].clientX - position.x;
+            velocity = dx * 1.5;
+            
+            strip.style.left = `${position.left + dx}px`;
+        });
+
+        // Анимация инерционного скролла
+        function animateScroll(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            const deltaTime = timestamp - lastTime;
+            lastTime = timestamp;
+            
+            if (Math.abs(velocity) > 0.5) {
+                const newLeft = strip.offsetLeft + velocity;
+                strip.style.left = `${newLeft}px`;
+                velocity *= friction;
+                animationFrame = requestAnimationFrame(animateScroll);
+            } else {
+                velocity = 0;
+                cancelAnimationFrame(animationFrame);
+                checkBounds();
+            }
+        }
+
+        // Проверка границ, чтобы лента не уходила за пределы
+        function checkBounds() {
+            const containerWidth = container.offsetWidth;
+            const stripWidth = strip.offsetWidth;
+            let left = strip.offsetLeft;
+            
+            // Правая граница
+            if (left > 0) {
+                left = 0;
+            }
+            // Левая граница
+            else if (left < containerWidth - stripWidth) {
+                left = containerWidth - stripWidth;
+            }
+            
+            strip.style.left = `${left}px`;
+        }
+
+        // Предотвращаем скролл страницы при взаимодействии с лентой
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Закрываем увеличенное фото при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.photo-item')) {
+                document.querySelectorAll('.photo-item').forEach(item => {
+                    item.style.transform = '';
+                    item.style.zIndex = '1';
+                });
+            }
+        });
+
+        // Анимация логотипа при скролле
+        const header = document.getElementById('mainHeader');
+        const logo = document.getElementById('mainLogo');
+        const logoContainer = document.getElementById('logoContainer');
+        const reflectionSection = document.getElementById('reflection');
+
+        window.addEventListener('scroll', () => {
+            const reflectionPosition = reflectionSection.getBoundingClientRect();
+            
+            if (reflectionPosition.top <= 100) {
+                header.classList.add('logo-scrolled');
+                logoContainer.classList.add('logo-container-scrolled');
+                logo.classList.add('logo-scrolled');
+            } else {
+                header.classList.remove('logo-scrolled');
+                logoContainer.classList.remove('logo-container-scrolled');
+                logo.classList.remove('logo-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

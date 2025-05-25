@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продукт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tektur', cursive;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 118px;
+        }
+        
+        /* Убираем полосы прокрутки */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Верхнее меню (как в portfolio.html) */
+        .top-menu {
+            position: fixed;
+            top: 18px;
+            left: 0;
+            width: 100%;
+            padding: 0 64px;
+            z-index: 100;
+            background-color: transparent;
+        }
+        
+        .menu-bar {
+            display: flex;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+        }
+        
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .menu-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 36px;
+            background-color: #f5f5dc;
+        }
+        
+        .menu-link {
+            font-family: 'Tektur', cursive;
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-link:hover {
+            color: #a0a0a0;
+        }
+        
+        .menu-link:active {
+            color: #707070;
+        }
+        
+        /* Выпадающее меню */
+        .portfolio-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 245, 220, 0.2);
+            border-radius: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            z-index: 60;
+        }
+        
+        .menu-item:hover .portfolio-dropdown {
+            max-height: 300px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 0;
+        }
+        
+        .dropdown-link {
+            font-family: 'Tektur', cursive;
+            font-size: 28px;
+            color: #f5f5dc;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-link:hover {
+            color: #a0a0a0;
+            background-color: rgba(245, 245, 220, 0.3);
+        }
+        
+        .dropdown-link:active {
+            color: #707070;
+        }
+
+        /* Основное содержимое */
+        main {
+            padding: 40px 64px;
+            padding-bottom: 0;
+        }
+        
+        /* Секция с фото */
+        .photo-section {
+            display: flex;
+            justify-content: flex-start;
+            padding: 30px 0;
+            min-height: 80vh;
+        }
+        
+        .photo-container {
+            display: flex;
+            position: relative;
+        }
+        
+        .main-photo {
+            width: 450px;
+            height: 450px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+        
+        .hidden-photos {
+            display: flex;
+            overflow: hidden;
+            width: 0;
+            transition: width 0.4s ease;
+            gap: 18px;
+            margin-left: 10px;
+            position: relative;
+            z-index: 20;
+            align-items: flex-start;
+        }
+        
+        .hidden-photo {
+            width: 450px;
+            height: 450px;
+            object-fit: cover;
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Стиль для второй секции - фото одинаковой высоты */
+        .photo-section:nth-child(2) .hidden-photo {
+            object-fit: cover;
+            height: 450px;
+        }
+        
+        .photo-description {
+            position: absolute;
+            left: 470px;
+            width: 300px;
+            padding: 20px;
+            z-index: 5;
+            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .photo-description h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .photo-description p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .photo-container:hover .main-photo {
+            transform: translateX(-8px);
+        }
+        
+        .photo-container:hover .hidden-photos {
+            width: 918px;
+        }
+        
+        .photo-container:hover .hidden-photo {
+            opacity: 1;
+        }
+
+        /* Меню контактов - растянуто на всю ширину */
+        .contacts-menu {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            height: 190px;
+            background-color: rgba(245, 245, 220, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .contacts-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 64px;
+        }
+        
+        .email-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-icon {
+            font-size: 36px;
+            margin-right: 20px;
+        }
+        
+        .email-address {
+            font-size: 24px;
+        }
+        
+        .gmail-text {
+            font-size: 24px;
+            margin-top: 11px;
+            margin-left: 56px;
+        }
+        
+        .social-section {
+            text-align: right;
+        }
+        
+        .social-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+        
+        .social-icon {
+            font-size: 36px;
+            color: #f5f5dc;
+            text-decoration: none;
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхнее меню (как в portfolio.html) -->
+    <nav class="top-menu">
+        <div class="menu-bar">
+            <div class="menu-item">
+                <a href="index.html#about" class="menu-link">обо мне</a>
+            </div>
+            <div class="menu-item">
+                <a href="portfolio.html" class="menu-link">портфолио</a>
+                <div class="portfolio-dropdown">
+                    <div class="dropdown-item">
+                        <a href="index.html#reload" class="dropdown-link">Reload</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio.html" class="dropdown-link">творческие работы</a>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="portfolio2.html" class="dropdown-link">коммерческие работы</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="product.html" class="menu-link">продукт</a>
+            </div>
+            <div class="menu-item">
+                <a href="education.html" class="menu-link">образование</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое -->
+    <main>
+        <!-- Секция 1 (без изменений) -->
+        <section class="photo-section">
+            <div class="photo-container">
+                <img src="Images\р2\IMG_9934.JPG" class="main-photo">
+                
+                <div class="photo-description">
+                    <h3>Футболка унисекс</h3>
+                    <p>Авторский принт</p>
+                    <p>Сублимационная печать на ткани</p>
+                    <p>Размер оверсайз</p>
+                </div>
+                
+                <div class="hidden-photos">
+                    <img src="Images\р2\IMG_9898.JPG" class="hidden-photo">
+                    <img src="Images\р2\IMG_9907.JPG" class="hidden-photo">
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 2 (обновленная) -->
+        <section class="photo-section" style="padding-top: 0;">
+            <div class="photo-container">
+                <img src="Images\р2\IMG_9936.JPG" class="main-photo">
+                
+                <div class="photo-description">
+                    <h3>Рубашка</h3>
+                    <p>Авторский принт</p>
+                    <p>Сублимационная печать на ткани</p>
+                    <p>Размер оверсайз</p>
+                    <p>С нуля были разработан дизайн, лекала и принт</p>
+                    <p>Ручная работа</p>
+                </div>
+                
+                <div class="hidden-photos">
+                    <!-- Фото поменяны местами -->
+                    <img src="Images\р2\IMG_9943.JPG" class="hidden-photo">
+                    <img src="Images\р2\IMG_9941.JPG" class="hidden-photo">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Меню контактов - растянуто на всю ширину -->
+    <section class="contacts-menu">
+        <div class="contacts-container">
+            <div class="email-section">
+                <i class="fas fa-envelope email-icon"></i>
+                <div>
+                    <div class="email-address">mamutovae3@mail.ru</div>
+                    <div class="gmail-text">/gmail.com</div>
+                </div>
+            </div>
+            <div class="social-section">
+                <div class="social-title">social media</div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Плавная анимация фотографий
+        document.querySelectorAll('.photo-container').forEach(container => {
+            const hiddenPhotos = container.querySelector('.hidden-photos');
+            const hiddenPhotoElements = container.querySelectorAll('.hidden-photo');
+            const photoDescription = container.querySelector('.photo-description');
+            
+            container.addEventListener('mouseenter', () => {
+                hiddenPhotos.style.width = '918px';
+                hiddenPhotoElements.forEach(photo => {
+                    photo.style.opacity = '1';
+                });
+                photoDescription.style.opacity = '0';
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                hiddenPhotos.style.width = '0';
+                hiddenPhotoElements.forEach(photo => {
+                    photo.style.opacity = '0';
+                });
+                photoDescription.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+</html>

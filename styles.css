@@ -1,0 +1,12 @@
+﻿::-webkit-scrollbar {
+    display: none;
+}
+/* Секция Reflection */
+#reflection {
+    scroll-margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#reflection p {
+    margin-bottom: 30px;
+}
